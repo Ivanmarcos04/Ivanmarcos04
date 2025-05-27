@@ -5,25 +5,28 @@ on:
     - cron: "0 */12 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write  # Isso dá permissão de escrita ao GITHUB_TOKEN padrão
+
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          persist-credentials: false  # Importante para o push funcionar
+
       - name: Generate Snake
         uses: Platane/snk@master
-        id: snake-gif
         with:
           github_user_name: ${{ github.repository_owner }}
           svg_out_path: dist/github-snake.svg
 
-      - name: Push to GitHub
+      - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2.6.0
         with:
           target_branch: gh-pages
           build_dir: dist
           keep_history: true
         env:
-          # Usa o PAT em vez do GITHUB_TOKEN padrão
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Usa o token automático

@@ -1,32 +1,51 @@
-name: Generate Snake Animation
+name: Update GitHub Snake Animation
 
 on:
   schedule:
-    - cron: "0 */12 * * *"
-  workflow_dispatch:
+    - cron: "0 */12 * * *"  # Runs every 12 hours
+  workflow_dispatch:  # Allows manual triggering
 
 permissions:
-  contents: write  # Isso dá permissão de escrita ao GITHUB_TOKEN padrão
+  contents: write  # Needed to push to gh-pages branch
 
 jobs:
-  generate:
+  generate-snake:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false  # Importante para o push funcionar
+          persist-credentials: false  # Important for push to work
 
-      - name: Generate Snake
+      - name: Generate Snake Animation
         uses: Platane/snk@master
+        id: snake
         with:
-          github_user_name: ${{ github.repository_owner }}
-          svg_out_path: dist/github-snake.svg
+          github_user_name: ${{ github.repository_owner }}  # Your GitHub username
+          svg_out_path: dist/github-contribution-grid-snake.svg
+          gif_out_path: dist/github-contribution-grid-snake.gif
+          force_update: true  # Always generate new animation
+
+      - name: Verify SVG File
+        run: |
+          echo "SVG file content (first 5 lines):"
+          head -n 5 dist/github-contribution-grid-snake.svg
+          echo "File size:"
+          ls -lh dist/github-contribution-grid-snake.svg
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2.6.0
         with:
-          target_branch: gh-pages
+          target_branch: gh-pages  # Must use gh-pages branch
           build_dir: dist
-          keep_history: true
+          clean: true  # Clean existing files
+          keep_history: false
+          commit_message: "Update snake animation [skip ci]"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Usa o token automático
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify Deployment
+        run: |
+          echo "Animation should now be available at:"
+          echo "https://github.com/${{ github.repository_owner }}/${{ github.repository_owner }}/blob/gh-pages/github-contribution-grid-snake.svg"

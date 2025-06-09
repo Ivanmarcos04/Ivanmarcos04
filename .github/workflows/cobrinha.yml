@@ -1,9 +1,9 @@
-name: Update GitHub Snake Animation
+name: Update Snake Animation
 
 on:
   schedule:
-    - cron: "0 */12 * * *"  # Runs every 12 hours
-  workflow_dispatch:  # Allows manual triggering
+    - cron: "0 */6 * * *"  # Runs every 6 hours
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,22 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Important for git history
 
-      - name: Generate Snake Animation
-        uses: Platane/snk@master
+      - uses: Platane/snk@master
         id: snake
         with:
-          github_user_name: ${{ github.repository_owner  }}
-          svg_out_path: github-contribution-grid-snake.svg
-          gif_out_path: github-contribution-grid-snake.gif
-          force_update: true
+          github_user_name: ${{ github.repository_owner }}
+          svg_out_path: ./github-contribution-grid-snake.svg
+          gif_out_path: ./github-contribution-grid-snake.gif
 
-      - name: Commit and push
+      - name: Push to repository
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add github-contribution-grid-snake.svg
+          git add .
           git commit -m "Update snake animation [skip ci]"
           git push

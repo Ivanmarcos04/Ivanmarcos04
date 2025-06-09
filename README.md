@@ -29,4 +29,4 @@
   <a href="www.linkedin.com/in/ivan-marcos-50b0b9233" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
 </div>
 
-![Snake animation](https://github.com/seuusername/seuusername/blob/output/github-contribution-grid-snake.svg)
+![Snake animation](https://github.com/Ivanmarcos04/Ivanmarcos04/blob/output/github-contribution-grid-snake.svg)

@@ -2,7 +2,7 @@ name: Update Snake Animation
 
 on:
   schedule:
-    - cron: "0 */6 * * *"  # Runs every 6 hours
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -14,15 +14,11 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Important for git history
 
       - uses: Platane/snk@master
-        id: snake
         with:
-          github_user_name: ${{ github.repository_owner }}
-          svg_out_path: ./github-contribution-grid-snake.svg
-          gif_out_path: ./github-contribution-grid-snake.gif
+          github_user_name: Ivanmarcos04
+          svg_out_path: ./output/github-contribution-grid-snake.svg
 
       - name: Push to repository
         run: |
